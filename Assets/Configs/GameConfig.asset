@@ -15,5 +15,5 @@ MonoBehaviour:
   BlockPrefab: {fileID: 615618720095219602, guid: 1384a0566185e8141aa623896fb3e58c,
     type: 3}
   TotalBlocksInFigure: 5
-  NotDefaultBlocks: 1
+  NotDefaultBlocks: 4
   BlocksGap: 0.11
