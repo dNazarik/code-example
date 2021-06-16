@@ -8,6 +8,12 @@ namespace Figure
 		public const string FigureName = "Figure";
 		public static readonly Vector3 SpawnPosition = new Vector3(0.0f, 0.2f, -6.0f);
 
+		private GameConfig _config;
+
+		public FigureModel(GameConfig config) => _config = config;
+		public Color GetRandomBlockColor() => Randomizer.GetRandomColor(false);
+		public float GetMovementSpeed(float deltaTime) => _config.FigureBaseSpeed * deltaTime;
+
 		public Vector3 GetSideBlockPosition(BlockType type, Vector3 sourceBlockPosition, float gap)
 		{
 			switch (type)

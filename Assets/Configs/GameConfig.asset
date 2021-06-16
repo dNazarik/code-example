@@ -14,6 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BlockPrefab: {fileID: 615618720095219602, guid: 1384a0566185e8141aa623896fb3e58c,
     type: 3}
+  DefaultBlockMaterial: {fileID: 2100000, guid: e8e23a24ba293ef408bfa6686f5463e9,
+    type: 2}
   TotalBlocksInFigure: 5
   NotDefaultBlocks: 4
   BlocksGap: 0.11
+  FigureBaseSpeed: 1

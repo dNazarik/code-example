@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Block;
 using Core;
 using UnityEngine;
@@ -12,7 +11,7 @@ namespace Figure
 		public BlockController Controller;
 	}
 
-	public class FigureController : MonoBehaviour
+	public class FigureController :  IUpdatable
 	{
 		private readonly ICommonFactory _factory;
 
@@ -25,9 +24,14 @@ namespace Figure
 		{
 			_factory = factory;
 
-			_model = new FigureModel();
+			_model = new FigureModel(config);
 
 			CreateFigure(_factory, config);
+		}
+
+		public void Update(float deltaTime)
+		{
+			MoveFigure(deltaTime);
 		}
 
 		private void CreateFigure(ICommonFactory factory, GameConfig config)
@@ -46,8 +50,9 @@ namespace Figure
 			for (var i = 0; i < _blocks.Length; i++)
 			{
 				_blocks[i] = new BlockController();
-				_blocks[i].CreateView(factory, config.BlockPrefab, _view.transform);
+				_blocks[i].CreateView(factory, config.BlockPrefab, GetFigureTransform());
 				_blocks[i].SetPosition(Vector3.zero + Vector3.up * i * config.BlocksGap);
+				_blocks[i].SetColor(config.DefaultBlockMaterial, _model.GetRandomBlockColor());
 			}
 
 			_sideBlocks = new SideBlock[config.NotDefaultBlocks];
@@ -61,7 +66,7 @@ namespace Figure
 				_sideBlocks[i] = new SideBlock();
 
 				var sideBlock = new BlockController();
-				sideBlock.CreateView(factory, config.BlockPrefab, _view.transform);
+				sideBlock.CreateView(factory, config.BlockPrefab, GetFigureTransform());
 
 				if (i > 0)
 				{
@@ -86,7 +91,15 @@ namespace Figure
 				var sideBlockPosition = _model.GetSideBlockPosition(sideType, sourceBlock.GetPosition(), config.BlocksGap);
 
 				sideBlock.SetPosition(sideBlockPosition);
+				sideBlock.SetColor(config.DefaultBlockMaterial, _model.GetRandomBlockColor());
 			}
 		}
+
+		private void MoveFigure(float deltaTime)
+		{
+			_view.MoveForward(_model.GetMovementSpeed(deltaTime));
+		}
+
+		public Transform GetFigureTransform() => _view.transform;
 	}
 }

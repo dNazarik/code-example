@@ -6,8 +6,10 @@ namespace Core
 	public class GameConfig : ScriptableObject
 	{
 		public GameObject BlockPrefab;
+		public Material DefaultBlockMaterial;
 		public int TotalBlocksInFigure;
 		public int NotDefaultBlocks;
 		public float BlocksGap;
+		public float FigureBaseSpeed;
 	}
 }

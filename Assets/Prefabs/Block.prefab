@@ -107,3 +107,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _transform: {fileID: 2470476452954407486}
+  _renderer: {fileID: 1749282101773963913}
