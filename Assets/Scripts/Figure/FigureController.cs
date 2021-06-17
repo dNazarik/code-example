@@ -14,8 +14,8 @@ namespace Figure
 	public class FigureController :  IUpdatable
 	{
 		private readonly ICommonFactory _factory;
-
 		private readonly FigureModel _model;
+
 		private FigureView _view;
 		private BlockController[] _blocks;
 		private SideBlock[] _sideBlocks;
@@ -37,6 +37,11 @@ namespace Figure
 		private void CreateFigure(ICommonFactory factory, GameConfig config)
 		{
 			_view = new GameObject(FigureModel.FigureName).AddComponent<FigureView>();
+
+			var rotator = new GameObject(FigureModel.RotatorName).transform;
+			rotator.SetParent(_view.transform);
+			rotator.localPosition = Vector3.zero;
+
 			_view.Init();
 			_view.SetPosition(FigureModel.SpawnPosition);
 
@@ -50,7 +55,7 @@ namespace Figure
 			for (var i = 0; i < _blocks.Length; i++)
 			{
 				_blocks[i] = new BlockController();
-				_blocks[i].CreateView(factory, config.BlockPrefab, GetFigureTransform());
+				_blocks[i].CreateView(factory, config.BlockPrefab, GetRotatorTransform());
 				_blocks[i].SetPosition(Vector3.zero + Vector3.up * i * config.BlocksGap);
 				_blocks[i].SetColor(config.DefaultBlockMaterial, _model.GetRandomBlockColor());
 			}
@@ -66,7 +71,7 @@ namespace Figure
 				_sideBlocks[i] = new SideBlock();
 
 				var sideBlock = new BlockController();
-				sideBlock.CreateView(factory, config.BlockPrefab, GetFigureTransform());
+				sideBlock.CreateView(factory, config.BlockPrefab, GetRotatorTransform());
 
 				if (i > 0)
 				{
@@ -101,5 +106,20 @@ namespace Figure
 		}
 
 		public Transform GetFigureTransform() => _view.transform;
+		public Transform GetRotatorTransform() => _view.transform.GetChild(0);
+
+		public void Swipe(bool isLeft) => RotateFigure(isLeft);
+
+		public async void RotateFigure(bool isClockwise)
+		{
+			if(_model.IsRotating)
+				return;
+
+			_model.IsRotating = true;
+
+			await _view.Rotate(isClockwise);
+
+			_model.IsRotating = false;
+		}
 	}
 }

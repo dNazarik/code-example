@@ -22,6 +22,12 @@ namespace Core
 			StartGame();
 		}
 
+		private void OnDestroy()
+		{
+			if (_inputController != null)
+				_inputController.OnSwipeDetected -= _figure.Swipe;
+		}
+
 		private void Update()
 		{
 			var deltaTime = Time.deltaTime;
@@ -42,6 +48,9 @@ namespace Core
 		private void GenerateFigure()
 		{
 			_figure = new FigureController(_commonFactory, _config);
+
+			if(_inputController != null)
+				_inputController.OnSwipeDetected += _figure.Swipe;
 
 			_updatables.Add(_figure);
 

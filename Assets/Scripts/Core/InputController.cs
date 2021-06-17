@@ -5,6 +5,8 @@ namespace Core
 {
 	public class InputController : IUpdatable
 	{
+		public event Action<bool> OnSwipeDetected; //arg0: is left swipe
+
 		private float _startTouchPosition;
 
 		public void Update(float deltaTime)
@@ -25,9 +27,7 @@ namespace Core
 				var isLeft = offset > 0.0f;
 
 				if (Math.Abs(offset) > float.Epsilon)
-					Debug.Log(isLeft ? "LEFT" : "RIGHT");
-				else
-					Debug.Log("MISSLICK");
+					OnSwipeDetected?.Invoke(isLeft);
 			}
 		}
 	}

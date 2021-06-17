@@ -5,8 +5,12 @@ namespace Figure
 {
 	public class FigureModel
 	{
+		public const float RotationTime = 1.0f;
 		public const string FigureName = "Figure";
+		public const string RotatorName = "Rotator";
 		public static readonly Vector3 SpawnPosition = new Vector3(0.0f, 0.2f, -6.0f);
+
+		public bool IsRotating { get; set; }
 
 		private GameConfig _config;
 
