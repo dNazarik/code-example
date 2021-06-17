@@ -31,24 +31,5 @@ namespace Barrier
 
 			return result.ToArray();
 		}
-
-		public Vector2Int[] GetGapsMaximumRadius(Vector2Int[] gapsCoordinates)
-		{
-			var result = new Vector2Int[gapsCoordinates.Length];
-
-			for (var i = 0; i < gapsCoordinates.Length; i++)
-			{
-				if (gapsCoordinates[i].x == 0)
-				{
-					result[i] = new Vector2Int(gapsCoordinates[i].y, 1);
-
-					continue;
-				}
-
-				result[i] = new Vector2Int(gapsCoordinates[i].y, gapsCoordinates[i].x * 2);
-			}
-
-			return result;
-		}
 	}
 }

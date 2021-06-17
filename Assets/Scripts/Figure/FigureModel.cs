@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using System.Linq;
+using Core;
 using UnityEngine;
 
 namespace Figure
@@ -34,17 +35,44 @@ namespace Figure
 			}
 		}
 
-		public int GetCoordinateByBlockType(BlockType type)
+		public Vector2Int GetCoordinateByBlockType(BlockType type, int currentSideAmount)
 		{
 			switch (type)
 			{
+				case BlockType.Back:
+					return new Vector2Int(0, -1 - currentSideAmount);
 				case BlockType.Left:
-					return -1;
+					return new Vector2Int(-1 - currentSideAmount, 0);
+				case BlockType.Forward:
+					return new Vector2Int(0, 1 + currentSideAmount);
 				case BlockType.Right:
-					return 1;
+					return new Vector2Int(1 + currentSideAmount, 0);
 				default:
-					return 0;
+					return Vector2Int.zero;
 			}
+		}
+
+		public Vector3Int[] GetGapsCoordinates(Vector3Int[] figureBlocksCoordinates, Vector3Int[] sideBlocksCoordinates)
+		{
+			var defaultBlocksCoordinates = figureBlocksCoordinates.ToList();
+
+			foreach (var vector3Int in sideBlocksCoordinates)
+			{
+				if (defaultBlocksCoordinates.Contains(vector3Int))
+					continue;
+
+				defaultBlocksCoordinates.Add(vector3Int);
+			}
+
+			foreach (var defaultBlocksCoordinate in defaultBlocksCoordinates)
+			{
+				if (defaultBlocksCoordinate.x == 0 && defaultBlocksCoordinate.z == 0)
+					Debug.Log("Base Gap " + defaultBlocksCoordinate);
+				else
+					Debug.Log("Side Gap " + defaultBlocksCoordinate);
+			}
+
+			return defaultBlocksCoordinates.ToArray();
 		}
 	}
 }

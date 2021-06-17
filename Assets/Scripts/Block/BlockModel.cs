@@ -4,6 +4,7 @@ namespace Block
 {
 	public class BlockModel
 	{
-		public Vector2Int BlockCoordinates { get; set; }
+		public Vector3Int BlockCoordinates { get; set; }
+		public bool IsActive { get; set; }
 	}
 }

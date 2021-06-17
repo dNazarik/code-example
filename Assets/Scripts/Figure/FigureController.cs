@@ -57,7 +57,7 @@ namespace Figure
 
 			for (var i = 0; i < _blocks.Length; i++)
 			{
-				var coordinates = new Vector2Int(0, i);
+				var coordinates = new Vector3Int(0, i, 0);
 
 				_blocks[i] = new BlockController();
 				_blocks[i].CreateView(factory, config.BlockPrefab, GetRotatorTransform(), coordinates);
@@ -75,8 +75,24 @@ namespace Figure
 
 				_sideBlocks[i] = new SideBlock();
 
-				var coordinates = new Vector2Int(_model.GetCoordinateByBlockType(sideType), heightId);
+				var amountOfThisSideBlocks = 0;
+
+				if (i > 0)
+				{
+					foreach (var block in _sideBlocks)
+					{
+						if (block?.Controller == null)
+							break;
+
+						if (block.Type == sideType && block.Controller.GetCoordinates().y == heightId)
+							amountOfThisSideBlocks++;
+					}
+				}
+
+				var coordinatesData = _model.GetCoordinateByBlockType(sideType, amountOfThisSideBlocks);
+				var coordinates = new Vector3Int(coordinatesData.x, heightId, coordinatesData.y);
 				var sideBlock = new BlockController();
+
 				sideBlock.CreateView(factory, config.BlockPrefab, GetRotatorTransform(), coordinates);
 
 				if (i > 0)
@@ -88,7 +104,7 @@ namespace Figure
 						if (block == null)
 							break;
 
-						if (block.Type == sideType)
+						if (block.Type == sideType && block.Controller.GetCoordinates().y == heightId)
 							lastSideBlockWithSameType = block;
 					}
 
@@ -118,19 +134,9 @@ namespace Figure
 			_model.IsRotating = false;
 		}
 
-		public Vector2Int[] GetGapsCoordinates()
-		{
-			var defaultBlocksCoordinates = _blocks.Select(g => g.GetCoordinates()).ToList();
-
-			foreach (var vector2Int in _sideBlocks.Select(b => b.Controller.GetCoordinates()).ToList())
-			{
-				if (defaultBlocksCoordinates.Contains(vector2Int))
-					continue;
-
-				defaultBlocksCoordinates.Add(vector2Int);
-			}
-
-			return defaultBlocksCoordinates.ToArray();
-		}
+		public Vector3Int[] GetGapsCoordinates()
+			=>
+				_model.GetGapsCoordinates(_blocks.Select(g => g.GetCoordinates()).ToArray(),
+					_sideBlocks.Select(b => b.Controller.GetCoordinates()).ToArray());
 	}
 }

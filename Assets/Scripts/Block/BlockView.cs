@@ -8,6 +8,7 @@ namespace Block
 		[SerializeField] private Renderer _renderer;
 
 		public void SetPosition(Vector3 position) => _transform.localPosition = position;
+		public void SetActivity(bool isActive) => _renderer.enabled = isActive;
 
 		public void SetColor(Material sourceMaterial, Color color)
 		{
