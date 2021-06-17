@@ -9,6 +9,7 @@ namespace Core
 		public Material DefaultBlockMaterial;
 		public int TotalBlocksInFigure;
 		public int NotDefaultBlocks;
+		public int BarriersAmount;
 		public float BlocksGap;
 		public float FigureBaseSpeed;
 	}

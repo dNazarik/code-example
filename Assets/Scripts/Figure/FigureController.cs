@@ -29,10 +29,12 @@ namespace Figure
 			CreateFigure(_factory, config);
 		}
 
-		public void Update(float deltaTime)
-		{
-			MoveFigure(deltaTime);
-		}
+		public void Update(float deltaTime) => MoveFigure(deltaTime);
+		private void MoveFigure(float deltaTime) => _view.MoveForward(_model.GetMovementSpeed(deltaTime));
+		public Transform GetFigureTransform() => _view.transform;
+		public Transform GetRotatorTransform() => _view.transform.GetChild(0);
+		public void Swipe(bool isLeft) => RotateFigure(isLeft);
+		public Vector3 GetMiddleBlockPosition() => _blocks[0].GetPosition();
 
 		private void CreateFigure(ICommonFactory factory, GameConfig config)
 		{
@@ -57,7 +59,7 @@ namespace Figure
 				_blocks[i] = new BlockController();
 				_blocks[i].CreateView(factory, config.BlockPrefab, GetRotatorTransform());
 				_blocks[i].SetPosition(Vector3.zero + Vector3.up * i * config.BlocksGap);
-				_blocks[i].SetColor(config.DefaultBlockMaterial, _model.GetRandomBlockColor());
+				_blocks[i].SetColor(config.DefaultBlockMaterial, Randomizer.GetRandomColor(false));
 			}
 
 			_sideBlocks = new SideBlock[config.NotDefaultBlocks];
@@ -96,19 +98,9 @@ namespace Figure
 				var sideBlockPosition = _model.GetSideBlockPosition(sideType, sourceBlock.GetPosition(), config.BlocksGap);
 
 				sideBlock.SetPosition(sideBlockPosition);
-				sideBlock.SetColor(config.DefaultBlockMaterial, _model.GetRandomBlockColor());
+				sideBlock.SetColor(config.DefaultBlockMaterial, Randomizer.GetRandomColor(false));
 			}
 		}
-
-		private void MoveFigure(float deltaTime)
-		{
-			_view.MoveForward(_model.GetMovementSpeed(deltaTime));
-		}
-
-		public Transform GetFigureTransform() => _view.transform;
-		public Transform GetRotatorTransform() => _view.transform.GetChild(0);
-
-		public void Swipe(bool isLeft) => RotateFigure(isLeft);
 
 		public async void RotateFigure(bool isClockwise)
 		{

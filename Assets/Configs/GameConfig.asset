@@ -18,5 +18,6 @@ MonoBehaviour:
     type: 2}
   TotalBlocksInFigure: 5
   NotDefaultBlocks: 4
+  BarriersAmount: 1
   BlocksGap: 0.11
   FigureBaseSpeed: 1

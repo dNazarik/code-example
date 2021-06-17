@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Barrier;
 using Figure;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace Core
 		[SerializeField] private Transform _cameraTransform;
 
 		private FigureController _figure;
+		private BarrierController _barrier;
 		private ICommonFactory _commonFactory;
 		private InputController _inputController;
 		private List<IUpdatable> _updatables;
@@ -43,6 +45,8 @@ namespace Core
 			_updatables.Add(_inputController);
 
 			GenerateFigure();
+
+			GenerateBarriers();
 		}
 
 		private void GenerateFigure()
@@ -56,5 +60,7 @@ namespace Core
 
 			_cameraTransform.SetParent(_figure.GetFigureTransform());
 		}
+
+		private void GenerateBarriers() => _barrier = new BarrierController(_commonFactory, _config, _figure.GetMiddleBlockPosition());
 	}
 }

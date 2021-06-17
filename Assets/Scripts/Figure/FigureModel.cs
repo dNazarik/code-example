@@ -15,7 +15,6 @@ namespace Figure
 		private GameConfig _config;
 
 		public FigureModel(GameConfig config) => _config = config;
-		public Color GetRandomBlockColor() => Randomizer.GetRandomColor(false);
 		public float GetMovementSpeed(float deltaTime) => _config.FigureBaseSpeed * deltaTime;
 
 		public Vector3 GetSideBlockPosition(BlockType type, Vector3 sourceBlockPosition, float gap)
