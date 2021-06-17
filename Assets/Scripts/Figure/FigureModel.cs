@@ -10,9 +10,9 @@ namespace Figure
 		public const string RotatorName = "Rotator";
 		public static readonly Vector3 SpawnPosition = new Vector3(0.0f, 0.2f, -6.0f);
 
-		public bool IsRotating { get; set; }
+		private readonly GameConfig _config;
 
-		private GameConfig _config;
+		public bool IsRotating { get; set; }
 
 		public FigureModel(GameConfig config) => _config = config;
 		public float GetMovementSpeed(float deltaTime) => _config.FigureBaseSpeed * deltaTime;
@@ -31,6 +31,19 @@ namespace Figure
 					return sourceBlockPosition + Vector3.right * gap;
 				default:
 					return sourceBlockPosition;
+			}
+		}
+
+		public int GetCoordinateByBlockType(BlockType type)
+		{
+			switch (type)
+			{
+				case BlockType.Left:
+					return -1;
+				case BlockType.Right:
+					return 1;
+				default:
+					return 0;
 			}
 		}
 	}

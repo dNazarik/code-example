@@ -8,7 +8,7 @@ namespace Barrier
 	{
 		public static readonly Vector3 FirstBarrierPosition = new Vector3(0.0f, 0.2f, 0.0f);
 		public const string BarrierName = "Barrier_";
-		private const int BarrierWidth = 7; //blocks
+		private const int BarrierWidth = 11; //blocks
 
 		private readonly GameConfig _config;
 
@@ -23,12 +23,32 @@ namespace Barrier
 			{
 				for (var j = 0; j < height; j++)
 				{
-					var position = new Vector3(middleBlockPosition.x + _config.BlocksGap * (i - widthLimit), middleBlockPosition.y + _config.BlocksGap * j, 0.0f);
+					var position = new Vector3(middleBlockPosition.x + _config.BlocksGap * (i - widthLimit),
+						middleBlockPosition.y + _config.BlocksGap * j, 0.0f);
 					result.Add(position);
 				}
 			}
 
 			return result.ToArray();
+		}
+
+		public Vector2Int[] GetGapsMaximumRadius(Vector2Int[] gapsCoordinates)
+		{
+			var result = new Vector2Int[gapsCoordinates.Length];
+
+			for (var i = 0; i < gapsCoordinates.Length; i++)
+			{
+				if (gapsCoordinates[i].x == 0)
+				{
+					result[i] = new Vector2Int(gapsCoordinates[i].y, 1);
+
+					continue;
+				}
+
+				result[i] = new Vector2Int(gapsCoordinates[i].y, gapsCoordinates[i].x * 2);
+			}
+
+			return result;
 		}
 	}
 }

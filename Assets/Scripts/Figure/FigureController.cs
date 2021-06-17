@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Block;
 using Core;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace Figure
 		public BlockController Controller;
 	}
 
-	public class FigureController :  IUpdatable
+	public class FigureController : IUpdatable
 	{
 		private readonly ICommonFactory _factory;
 		private readonly FigureModel _model;
@@ -56,8 +57,10 @@ namespace Figure
 
 			for (var i = 0; i < _blocks.Length; i++)
 			{
+				var coordinates = new Vector2Int(0, i);
+
 				_blocks[i] = new BlockController();
-				_blocks[i].CreateView(factory, config.BlockPrefab, GetRotatorTransform());
+				_blocks[i].CreateView(factory, config.BlockPrefab, GetRotatorTransform(), coordinates);
 				_blocks[i].SetPosition(Vector3.zero + Vector3.up * i * config.BlocksGap);
 				_blocks[i].SetColor(config.DefaultBlockMaterial, Randomizer.GetRandomColor(false));
 			}
@@ -72,8 +75,9 @@ namespace Figure
 
 				_sideBlocks[i] = new SideBlock();
 
+				var coordinates = new Vector2Int(_model.GetCoordinateByBlockType(sideType), heightId);
 				var sideBlock = new BlockController();
-				sideBlock.CreateView(factory, config.BlockPrefab, GetRotatorTransform());
+				sideBlock.CreateView(factory, config.BlockPrefab, GetRotatorTransform(), coordinates);
 
 				if (i > 0)
 				{
@@ -81,7 +85,7 @@ namespace Figure
 
 					foreach (var block in _sideBlocks)
 					{
-						if(block == null)
+						if (block == null)
 							break;
 
 						if (block.Type == sideType)
@@ -104,7 +108,7 @@ namespace Figure
 
 		public async void RotateFigure(bool isClockwise)
 		{
-			if(_model.IsRotating)
+			if (_model.IsRotating)
 				return;
 
 			_model.IsRotating = true;
@@ -112,6 +116,21 @@ namespace Figure
 			await _view.Rotate(isClockwise);
 
 			_model.IsRotating = false;
+		}
+
+		public Vector2Int[] GetGapsCoordinates()
+		{
+			var defaultBlocksCoordinates = _blocks.Select(g => g.GetCoordinates()).ToList();
+
+			foreach (var vector2Int in _sideBlocks.Select(b => b.Controller.GetCoordinates()).ToList())
+			{
+				if (defaultBlocksCoordinates.Contains(vector2Int))
+					continue;
+
+				defaultBlocksCoordinates.Add(vector2Int);
+			}
+
+			return defaultBlocksCoordinates.ToArray();
 		}
 	}
 }

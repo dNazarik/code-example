@@ -53,7 +53,7 @@ namespace Core
 		{
 			_figure = new FigureController(_commonFactory, _config);
 
-			if(_inputController != null)
+			if (_inputController != null)
 				_inputController.OnSwipeDetected += _figure.Swipe;
 
 			_updatables.Add(_figure);
@@ -61,6 +61,9 @@ namespace Core
 			_cameraTransform.SetParent(_figure.GetFigureTransform());
 		}
 
-		private void GenerateBarriers() => _barrier = new BarrierController(_commonFactory, _config, _figure.GetMiddleBlockPosition());
+		private void GenerateBarriers()
+			=>
+				_barrier =
+					new BarrierController(_commonFactory, _config, _figure.GetMiddleBlockPosition(), _figure.GetGapsCoordinates());
 	}
 }
