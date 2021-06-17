@@ -73,10 +73,6 @@ namespace Barrier
 
 		private void ApplyGaps(BlockController[] blocks, Vector3Int[] gapsCoordinates)
 		{
-			//foreach (var vector2Int in gapsCoordinates)
-			//{
-			//	Debug.Log(vector2Int);
-			//}
 		}
 	}
 }

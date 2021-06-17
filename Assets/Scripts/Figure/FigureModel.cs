@@ -64,14 +64,6 @@ namespace Figure
 				defaultBlocksCoordinates.Add(vector3Int);
 			}
 
-			foreach (var defaultBlocksCoordinate in defaultBlocksCoordinates)
-			{
-				if (defaultBlocksCoordinate.x == 0 && defaultBlocksCoordinate.z == 0)
-					Debug.Log("Base Gap " + defaultBlocksCoordinate);
-				else
-					Debug.Log("Side Gap " + defaultBlocksCoordinate);
-			}
-
 			return defaultBlocksCoordinates.ToArray();
 		}
 	}
