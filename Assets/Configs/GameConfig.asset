@@ -17,7 +17,7 @@ MonoBehaviour:
   DefaultBlockMaterial: {fileID: 2100000, guid: e8e23a24ba293ef408bfa6686f5463e9,
     type: 2}
   TotalBlocksInFigure: 5
-  NotDefaultBlocks: 4
+  NotDefaultBlocks: 2
   BarrierExtraHeightAmount: 2
   BarriersAmount: 6
   BarriersOffset: 4
